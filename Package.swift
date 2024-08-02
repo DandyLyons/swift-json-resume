@@ -11,6 +11,9 @@ let package = Package(
             name: "swift-json-resume",
             targets: ["SwiftyJSONResume"]),
     ],
+    dependencies: [
+      .package(url: "https://github.com/pointfreeco/swift-custom-dump.git", branch: "main")
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
@@ -18,6 +21,10 @@ let package = Package(
             name: "SwiftyJSONResume"),
         .testTarget(
             name: "SwiftyJSONResumeTests",
-            dependencies: ["SwiftyJSONResume"]),
+            dependencies: [
+              "SwiftyJSONResume",
+              
+              .product(name: "CustomDump", package: "swift-custom-dump")
+            ]),
     ]
 )

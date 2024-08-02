@@ -1,8 +1,9 @@
 import XCTest
 @testable import SwiftyJSONResume
+import CustomDump
 
 final class ResumeTests: XCTestCase {
-  func testResumeDecoding() throws {
+  func testResumeCodable() throws {
     let json = """
         {
         "basics": {
@@ -80,7 +81,9 @@ final class ResumeTests: XCTestCase {
     let data = json.data(using: .utf8)!
     let decoder = JSONDecoder()
     let resume = try decoder.decode(Resume.self, from: data)
-    XCTAssertEqual(resume.basics?.name, "Aaron Visser")
-    XCTAssertEqual(resume.basics?.email, "aaron-visser@gmail.com")
+    let encoder = JSONEncoder()
+    let reencoded = try encoder.encode(resume)
+    let redecoded = try decoder.decode(Resume.self, from: reencoded)
+    expectNoDifference(resume, redecoded)
   }
 }
