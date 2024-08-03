@@ -1,3 +1,4 @@
+import CustomDump
 import Foundation
 import JSONSchema
 
@@ -48,13 +49,28 @@ public struct Resume: Codable, Hashable, Sendable {
     return schemaDict
   }
   
-  var isValidJSONResume: Bool {
-    do {
-      let dict = try Self.schema()
-      let validationResult = try? JSONSchema.validate(self, schema: dict)
-      return validationResult?.valid ?? false
-    } catch {
+  /// whether this instance conforms to the jsonresume.org schema
+  func isValidJSONResume() throws -> Bool {
+    let schema = try Self.schema()
+    let encoder = JSONEncoder()
+    let data = try encoder.encode(self)
+    let resumeDict = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+    print("resumeDict:")
+    customDump(resumeDict)
+    let validationResult = try? JSONSchema.validate(resumeDict, schema: schema)
+    print("validationResult?.isValid", validationResult?.isValid)
+//    return validationResult?.isValid ?? false
+    
+    guard let validationResult else {
+      print("No validation result")
       return false
+    }
+    if validationResult.isValid == false {
+      print("Resume is not valid json resume.")
+      customDump(validationResult)
+      return false
+    } else {
+      return true
     }
   }
   
