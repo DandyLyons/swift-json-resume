@@ -4,27 +4,31 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-json-resume",
+    name: "SwiftyJSONResume",
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "swift-json-resume",
+            name: "SwiftyJSONResume",
             targets: ["SwiftyJSONResume"]),
     ],
     dependencies: [
-      .package(url: "https://github.com/pointfreeco/swift-custom-dump.git", branch: "main")
+      .package(url: "https://github.com/pointfreeco/swift-custom-dump.git", branch: "main"),
+      .package(url: "https://github.com/kylef/JSONSchema.swift.git", branch: "master"),
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "SwiftyJSONResume"),
+            name: "SwiftyJSONResume",
+            resources: [
+              .process("Resources/JavaScript/node_modules/@jsonresume/schema"),
+            ]
+        ),
         .testTarget(
             name: "SwiftyJSONResumeTests",
             dependencies: [
               "SwiftyJSONResume",
               
-              .product(name: "CustomDump", package: "swift-custom-dump")
+              .product(name: "CustomDump", package: "swift-custom-dump"),
+              .product(name: "JSONSchema", package: "jsonschema.swift"),
             ]),
     ]
 )
+//
