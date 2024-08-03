@@ -6,7 +6,7 @@ import JSONSchema
 
 final class ResumeTests: XCTestCase {
   func testResumeCodable() throws {
-    let jsonString = try Resources.read(file: .json(named: "sample.resume"))
+    let jsonString = Resources.read(file: .json(named: "sample.resume"))
     let data = jsonString.data(using: .utf8)!
     let decoder = JSONDecoder()
     let resume = try decoder.decode(Resume.self, from: data)
@@ -17,7 +17,7 @@ final class ResumeTests: XCTestCase {
   }
   
   func testValidation() throws {
-    let schemaDict = try Resume.schema()
+    let schemaDict = Resume.schema
     
     let invalid: [String: Any] = [
       "basics": [
@@ -31,7 +31,7 @@ final class ResumeTests: XCTestCase {
     let resultValid = try JSONSchema.validate([:], schema: schemaDict)
     XCTAssertEqual(resultValid.valid, true)
       
-    let validJSONString: String = try Resources.read(file: .json(named: "sample.resume"))
+    let validJSONString: String = Resources.read(file: .json(named: "sample.resume"))
     let data = Data(validJSONString.utf8)
     let valid = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
     
@@ -124,7 +124,7 @@ final class ResumeTests: XCTestCase {
       )]
     )
     
-    XCTAssertEqual(try resume.isValidJSONResume(), true)
+    XCTAssertEqual(resume.isValidJSONResume, true)
   }
 }
 

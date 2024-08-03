@@ -12,12 +12,16 @@ let package = Package(
             targets: ["SwiftyJSONResume"]),
     ],
     dependencies: [
-      .package(url: "https://github.com/pointfreeco/swift-custom-dump.git", branch: "main"),
-      .package(url: "https://github.com/kylef/JSONSchema.swift.git", branch: "master"),
+      .package(url: "https://github.com/pointfreeco/swift-custom-dump.git", from: "1.2.2"),
+      .package(url: "https://github.com/kylef/JSONSchema.swift.git", from: "0.6.0"),
     ],
     targets: [
         .target(
             name: "SwiftyJSONResume",
+            dependencies: [
+              .product(name: "CustomDump", package: "swift-custom-dump"),
+              .product(name: "JSONSchema", package: "jsonschema.swift"),
+            ],
             resources: [
               .process("Resources/JavaScript/node_modules/@jsonresume/schema"),
             ]

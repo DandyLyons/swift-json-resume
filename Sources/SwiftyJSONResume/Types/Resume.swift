@@ -1,6 +1,7 @@
 import CustomDump
 import Foundation
 import JSONSchema
+import IssueReporting
 
 public struct Resume: Codable, Hashable, Sendable {
     public var basics: Basics?
@@ -38,35 +39,40 @@ public struct Resume: Codable, Hashable, Sendable {
     self.references = references
   }
   
-  static func schema() throws -> [String: Any] {
-    let schemaString = try Resources.read(file: .json(named: "schema"))
+  static let schema: [String: Any] = {
+    let schemaString = Resources.read(file: .json(named: "schema"))
     guard let schemaJSON = schemaString.data(using: .utf8) else {
-      throw Error.failedToReadSchemaFrom(string: schemaString)
+      reportIssue("Schema loaded from disk is invalid utf8 string")
+      return [:]
     }
-    guard let schemaDict = try JSONSerialization.jsonObject(with: schemaJSON, options: []) as? [String: Any] else {
-      throw Error.failedToSerializeDictFor(data: schemaJSON)
+    guard let schemaDict = try? JSONSerialization.jsonObject(with: schemaJSON, options: []) as? [String: Any] else {
+      reportIssue("Schema loaded from disk is invalid [String: Any]")
+      return [:]
     }
     return schemaDict
-  }
+  }()
   
   /// whether this instance conforms to the jsonresume.org schema
-  func isValidJSONResume() throws -> Bool {
-    let schema = try Self.schema()
+  var isValidJSONResume: Bool {
     let encoder = JSONEncoder()
-    let data = try encoder.encode(self)
-    let resumeDict = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-    print("resumeDict:")
-    customDump(resumeDict)
-    let validationResult = try? JSONSchema.validate(resumeDict, schema: schema)
-    print("validationResult?.isValid", validationResult?.isValid)
-//    return validationResult?.isValid ?? false
-    
-    guard let validationResult else {
-      print("No validation result")
+    guard let data = try? encoder.encode(self) else {
+      reportIssue("Failed to encode resume to JSON. Resume:\(self)")
+      customDump(self)
       return false
     }
+    guard let resumeDict = try? JSONSerialization.jsonObject(with: data, options: []) as! [String: Any] else {
+      reportIssue("Failed to serialize resume into [String: Any]")
+      customDump(data)
+      return false
+    }
+    let schema = Self.schema
+    guard let validationResult = try? JSONSchema.validate(resumeDict, schema: schema) else {
+      reportIssue("missing a validation result")
+      return false
+    }
+    
     if validationResult.isValid == false {
-      print("Resume is not valid json resume.")
+      reportIssue("Resume is not valid json resume.")
       customDump(validationResult)
       return false
     } else {

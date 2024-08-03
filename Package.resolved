@@ -1,13 +1,13 @@
 {
-  "originHash" : "1a0bb65abc80a6a36661a0a2d2606582d650958b426cec498c8aa11e316d6350",
+  "originHash" : "66c147cbd32c92d89b09e8064eafbb7575f5d9492b74895a2fe4ec5cc4cd4de9",
   "pins" : [
     {
       "identity" : "jsonschema.swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kylef/JSONSchema.swift.git",
       "state" : {
-        "branch" : "master",
-        "revision" : "8c7ec156dde09715d8d2ed83cc8fe6b1ba90648c"
+        "revision" : "d14de4b2d9205068c9db89c00d097ca43c897000",
+        "version" : "0.6.0"
       }
     },
     {
@@ -24,7 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kylef/Spectre.git",
       "state" : {
-        "revision" : "d02129a9af77729de049d328dd61e530b6f2bb2b"
+        "revision" : "26cc5e9ae0947092c7139ef7ba612e34646086c7",
+        "version" : "0.10.1"
       }
     },
     {
@@ -32,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-custom-dump.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "82645ec760917961cfa08c9c0c7104a57a0fa4b1"
+        "revision" : "82645ec760917961cfa08c9c0c7104a57a0fa4b1",
+        "version" : "1.3.3"
       }
     },
     {
