@@ -1,7 +1,5 @@
 import Foundation
-
-
-
+import JSONSchema
 
 public struct Resume: Codable, Hashable, Sendable {
     public var basics: Basics?
@@ -37,5 +35,35 @@ public struct Resume: Codable, Hashable, Sendable {
     self.languages = languages
     self.interests = interests
     self.references = references
+  }
+  
+  static func schema() throws -> [String: Any] {
+    let schemaString = try Resources.read(file: .json(named: "schema"))
+    guard let schemaJSON = schemaString.data(using: .utf8) else {
+      throw Error.failedToReadSchemaFrom(string: schemaString)
+    }
+    guard let schemaDict = try JSONSerialization.jsonObject(with: schemaJSON, options: []) as? [String: Any] else {
+      throw Error.failedToSerializeDictFor(data: schemaJSON)
+    }
+    return schemaDict
+  }
+  
+  var isValidJSONResume: Bool {
+    do {
+      let dict = try Self.schema()
+      let validationResult = try? JSONSchema.validate(self, schema: dict)
+      return validationResult?.valid ?? false
+    } catch {
+      return false
+    }
+  }
+  
+  
+}
+
+extension Resume {
+  public enum Error: Swift.Error {
+    case failedToReadSchemaFrom(string: String)
+    case failedToSerializeDictFor(data: Data)
   }
 }

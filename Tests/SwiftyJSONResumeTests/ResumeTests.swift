@@ -17,22 +17,14 @@ final class ResumeTests: XCTestCase {
   }
   
   func testValidation() throws {
-    let schemaString = try Resources.read(file: .json(named: "schema"))
-    guard let schemaJSON = schemaString.data(using: .utf8) else {
-      XCTFail("Failed to read schema from string: \(schemaString)")
-      return
-    }
-    guard let schemaDict = try JSONSerialization.jsonObject(with: schemaJSON, options: []) as? [String: Any] else {
-      XCTFail("Failed to serialize dict for json object: \(customDump(schemaJSON))")
-      return
-    }
+    let schemaDict = try Resume.schema()
     
-    let inValid: [String: Any] = [
+    let invalid: [String: Any] = [
       "basics": [
         "name": 23
       ]
     ]
-    let resultInvalid = try JSONSchema.validate(inValid, schema: schemaDict)
+    let resultInvalid = try JSONSchema.validate(invalid, schema: schemaDict)
     XCTAssertEqual(resultInvalid.valid, false)
     
     // an empty JSON dict should be valid
@@ -45,31 +37,26 @@ final class ResumeTests: XCTestCase {
     
     let sampleResultValid = try JSONSchema.validate(valid, schema: schemaDict)
     XCTAssertEqual(sampleResultValid.isValid, true)
-    customDump(sampleResultValid)
   }
-}
-
-
-extension ValidationResult {
   
-  /// same as `valid` with a little extra logic
-  ///
-  /// Currently `JSONSchema.swift` is missing some use cases. For example, format validation of email is not yet supported.
-  /// For this reason we simply return true for the unsupported cases.
-  package var isValid: Bool {
-    switch self.valid {
-      case true: return true
-      case false:
-        guard let errors, !errors.isEmpty else {
-          return true
-        }
-        for error in errors {
-          if error.description == "\'format\' validation of \'email\' is not yet supported." {
-            continue
-          }
-          return false
-        }
-        return true
-    }
+  func testResumeSwiftTypeIsValid() throws {
+    let resume = Resume(
+      basics: .init(
+        email: "example@email.com",
+        image: nil,
+        label: nil,
+        location: nil,
+        name: "Blob McBlob",
+        phone: "555-1234",
+        profiles: nil,
+        summary: "This is a summary.",
+        url: "example.com"
+      )
+    )
+    
+    XCTAssertEqual(resume.isValidJSONResume, true)
   }
 }
+
+
+
