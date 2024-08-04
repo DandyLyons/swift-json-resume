@@ -121,7 +121,12 @@ final class ResumeTests: XCTestCase {
       references: [.init(
         name: "This is a name of a reference",
         reference: "This is a reference"
-      )]
+      )],
+      meta: .init(
+        canonical: "https://www.google.com",
+        lastModified: "2020-01-01T12:45:59",
+        version: "1.0.0"
+      )
     )
     
     XCTAssertEqual(resume.isValidJSONResume, true)

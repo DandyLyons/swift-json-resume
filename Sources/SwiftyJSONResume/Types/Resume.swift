@@ -4,16 +4,17 @@ import JSONSchema
 import IssueReporting
 
 public struct Resume: Codable, Hashable, Sendable {
-    public var basics: Basics?
-    public var work: [Work]?
-    public var volunteer: [Volunteer]?
-    public var education: [Education]?
-    public var awards: [Award]?
-    public var publications: [Publication]?
-    public var skills: [Skill]?
-    public var languages: [Language]?
-    public var interests: [Interest]?
-    public var references: [Reference]?
+  public var basics: Basics?
+  public var work: [Work]?
+  public var volunteer: [Volunteer]?
+  public var education: [Education]?
+  public var awards: [Award]?
+  public var publications: [Publication]?
+  public var skills: [Skill]?
+  public var languages: [Language]?
+  public var interests: [Interest]?
+  public var references: [Reference]?
+  public var meta: Meta?
   
   public init(
     basics: Basics? = nil,
@@ -25,7 +26,8 @@ public struct Resume: Codable, Hashable, Sendable {
     skills: [Skill]? = nil,
     languages: [Language]? = nil,
     interests: [Interest]? = nil,
-    references: [Reference]? = nil
+    references: [Reference]? = nil,
+    meta: Meta? = nil
   ) {
     self.basics = basics
     self.work = work
