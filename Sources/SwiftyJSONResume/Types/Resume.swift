@@ -58,7 +58,7 @@ public struct Resume: Codable, Hashable, Sendable {
   var isValidJSONResume: Bool {
     let encoder = JSONEncoder()
     guard let data = try? encoder.encode(self) else {
-      reportIssue("Failed to encode resume to JSON. Resume:\(self)")
+      reportIssue("It shouldn't be possible for a Resume to fail to encode to JSON")
       customDump(self)
       return false
     }
@@ -82,7 +82,17 @@ public struct Resume: Codable, Hashable, Sendable {
     }
   }
   
-  
+  var asJSONString: String {
+    let encoder = JSONEncoder()
+    encoder.dateEncodingStrategy = .iso8601
+    encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+    guard let data = try? encoder.encode(self) else {
+      reportIssue("It shouldn't be possible for a Resume to fail to encode to JSON")
+      customDump(self)
+      return "{}"
+    }
+    return String(decoding: data, as: UTF8.self)
+  }
 }
 
 extension Resume {
