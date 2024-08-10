@@ -7,16 +7,6 @@ swift-json-resume is a package which vends a module called `SwiftyJSONResume` wh
 - Swift 5.5 or later
 - npm (Node Package Manager)
 
-## Setup
-
-Before using this package, you need to install the JavaScript dependencies. Follow these steps:
-
-1. Ensure you have npm installed on your machine. You can download and install it from [nodejs.org](https://nodejs.org/).
-2. Run the bootstrap script to install the JavaScript dependencies:
-    ```bash
-    ./bootstrap.sh
-    ```
-
 ## Installation
 
 To install `SwiftyJSONResume` in your Swift project, add the following dependency to your `Package.swift` file:

@@ -96,7 +96,7 @@ final class ResumeTests: XCTestCase {
   
   func testResumeCodable() throws {
     let jsonString = Resources.read(
-      fromFolder: .jsonresume_schema,
+      fromFolder: .v1_2_1,
       file: .json(named: "sample.resume")
     )
     let data = jsonString.data(using: .utf8)!
@@ -124,7 +124,7 @@ final class ResumeTests: XCTestCase {
     XCTAssertEqual(resultValid.valid, true)
       
     let validJSONString: String = Resources.read(
-      fromFolder: .jsonresume_schema,
+      fromFolder: .v1_2_1,
       file: .json(named: "sample.resume")
     )
     let data = Data(validJSONString.utf8)

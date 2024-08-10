@@ -43,7 +43,7 @@ public struct Resume: Codable, Hashable, Sendable {
   
   static let schema: [String: Any] = {
     let schemaString = Resources.read(
-      fromFolder: .jsonresume_schema,
+      fromFolder: .v1_2_1,
       file: .json(named: "schema")
     )
     guard let schemaJSON = schemaString.data(using: .utf8) else {

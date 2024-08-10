@@ -7,13 +7,13 @@ enum Resources {
     case failedToFindFile(File)
   }
   enum Folders {
-    case jsonresume_schema
+    case v1_2_1
     
     var url: URL {
       let url: URL? = switch self {
-        case .jsonresume_schema:
-          Bundle.module.resourceURL?
-            .appendingPathComponent("JavaScript/node_modules/@jsonresume/schema/")
+      case .v1_2_1:
+        Bundle.module.resourceURL?
+          .appendingPathComponent("JSONResume/1.2.1")
       }
       return url ?? Bundle.main.bundleURL
     }
@@ -41,5 +41,6 @@ enum Resources {
     }
     return contents
   }
+  
 }
 
