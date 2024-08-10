@@ -6,25 +6,40 @@ enum Resources {
     case failedToFindResourceAtPath(String)
     case failedToFindFile(File)
   }
+  enum Folders {
+    case jsonresume_schema
+    
+    var url: URL {
+      let url: URL? = switch self {
+        case .jsonresume_schema:
+          Bundle.module.resourceURL?
+            .appendingPathComponent("JavaScript/node_modules/@jsonresume/schema/")
+      }
+      return url ?? Bundle.main.bundleURL
+    }
+    
+  }
+  
   enum File {
     case json(named: String)
     case js(named: String)
   }
   
-  static func read(file: File) -> String {
-    let filePath: String?
+  static func read(fromFolder folder: Folders, file: File) -> String {
+    var url = folder.url
+    
     switch file {
       case .json(let name):
-        filePath = Bundle.module.path(forResource: name, ofType: "json")
+        url.appendPathComponent("\(name).json")
       case .js(named: let name):
-        filePath = Bundle.module.path(forResource: name, ofType: "js")
+        url.appendPathComponent("\(name).js")
     }
     
-    guard let filePath = filePath,
-      let contents = try? String(contentsOfFile: filePath, encoding: .utf8) else {
-      reportIssue("no contents found at file path: \(String(describing: filePath))")
+    guard let contents = try? String(contentsOf: url) else {
+      reportIssue("no contents found at file path: \(url.absoluteString)")
       return ""
     }
     return contents
   }
 }
+

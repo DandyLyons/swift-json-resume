@@ -42,7 +42,10 @@ public struct Resume: Codable, Hashable, Sendable {
   }
   
   static let schema: [String: Any] = {
-    let schemaString = Resources.read(file: .json(named: "schema"))
+    let schemaString = Resources.read(
+      fromFolder: .jsonresume_schema,
+      file: .json(named: "schema")
+    )
     guard let schemaJSON = schemaString.data(using: .utf8) else {
       reportIssue("Schema loaded from disk is invalid utf8 string")
       return [:]

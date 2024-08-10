@@ -23,7 +23,7 @@ let package = Package(
               .product(name: "JSONSchema", package: "jsonschema.swift"),
             ],
             resources: [
-              .process("Resources/JavaScript/node_modules/@jsonresume/schema"),
+              .copy("Resources/JavaScript"),
             ]
         ),
         .testTarget(
@@ -36,4 +36,3 @@ let package = Package(
             ]),
     ]
 )
-//

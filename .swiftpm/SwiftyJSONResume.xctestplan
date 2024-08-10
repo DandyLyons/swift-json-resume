@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "129BF9BE-8A28-4F89-8DFF-3B1CFEA989C8",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SwiftyJSONResumeTests",
+        "name" : "SwiftyJSONResumeTests"
+      }
+    }
+  ],
+  "version" : 1
+}

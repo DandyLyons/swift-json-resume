@@ -95,7 +95,10 @@ final class ResumeTests: XCTestCase {
   )
   
   func testResumeCodable() throws {
-    let jsonString = Resources.read(file: .json(named: "sample.resume"))
+    let jsonString = Resources.read(
+      fromFolder: .jsonresume_schema,
+      file: .json(named: "sample.resume")
+    )
     let data = jsonString.data(using: .utf8)!
     let decoder = JSONDecoder()
     let resume = try decoder.decode(Resume.self, from: data)
@@ -120,12 +123,16 @@ final class ResumeTests: XCTestCase {
     let resultValid = try JSONSchema.validate([:], schema: schemaDict)
     XCTAssertEqual(resultValid.valid, true)
       
-    let validJSONString: String = Resources.read(file: .json(named: "sample.resume"))
+    let validJSONString: String = Resources.read(
+      fromFolder: .jsonresume_schema,
+      file: .json(named: "sample.resume")
+    )
     let data = Data(validJSONString.utf8)
     let valid = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
     
     let sampleResultValid = try JSONSchema.validate(valid, schema: schemaDict)
     XCTAssertEqual(sampleResultValid.isValid, true)
+    customDump(sampleResultValid)
   }
   
   func testResumeSwiftTypeIsValid() throws {
